@@ -1,0 +1,21 @@
+First create a directory
+cd to the newly created directory
+Now, Create a file with .tf extenstion
+
+provide "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_instance" "vm" {
+  ami = ""
+  subnet_id = ""
+  instance_type = "t3.micro"
+  tags {
+    Name = "My first code"
+  }
+}
+
+terraform init
+terraform plan
+terraform apply
+terraform destroy
