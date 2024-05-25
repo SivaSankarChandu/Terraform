@@ -1,0 +1,1 @@
+The terraform plan command goes through the code and creates a plan of execution on which the apply command acts.
