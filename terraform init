@@ -1,0 +1,1 @@
+The terraform init command initializes a Terraform working directory by downloading modules, providers, and setting up the backend for storing state files. It is the first command that should be run after writing a new Terraform configuration or cloning an existing one from version control.
