@@ -1,0 +1,1 @@
+The recommended Terraform workflow is to write the code (Write), review it (Plan), and then execute/deploy the code (Apply).
