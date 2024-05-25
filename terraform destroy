@@ -1,0 +1,1 @@
+The terraform destroy command cleans up and deletes all infrastructure tracked in the state file.
