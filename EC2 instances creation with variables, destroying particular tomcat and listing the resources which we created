@@ -1,0 +1,51 @@
+provider.tf
+===================================================================================================
+provider "aws" {
+  region = "us-east-1"
+}
+===================================================================================================
+resource.tf
+===================================================================================================
+resource "aws_instance" "chandu" {
+  ami               = var.iid
+  availability_zone = var.azone
+  instance_type     = var.itype
+  key_name          = var.kname
+  tags = {
+    Name = "Terraform"
+  }
+  count = var.icount
+}
+===================================================================================================
+variables.tf
+===================================================================================================
+variable "iid" {
+  type = string
+  default = "copy_ami_id_from_AWS_same_region_which_we_mentioned _in_the_provider_section"
+}
+variable "az" {
+  type = string
+  default = "us-east-1c"
+}
+variable "itype" {
+  type = string
+  default = "t2.micro"
+}
+variable "kname" {
+  type = string
+  default = "keyname"
+}
+variable "icount" {
+  type = number
+  default = 2
+}
+
+===================================================================================================
+
+terraform fmt provider.tf resource.tf variables.tf
+terraform plan
+terraform apply --auto-approve
+terraform state list
+terraform destroy --auto-approve --target=aws_instance.chandu[1]
+terraform state list
+terraform destroy --auto-approve --target=aws_instance.chandu
