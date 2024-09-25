@@ -1,0 +1,82 @@
+provider.tf
+======================================================================
+provider "aws" {
+  region = "us-east-1"
+}
+======================================================================
+resource.tf
+======================================================================
+resource "aws_instance" "flm" {
+  ami               = var.imageid
+  availability_zone = var.az
+  instance_type     = var.itype
+  key_name          = var.key
+  tags = {
+    Name = "Terraform"
+  }
+  count                  = var.icount
+  vpc_security_group_ids = [aws_security_group.my_sg.id] #Resource name and Label id
+}
+======================================================================
+sg.tf
+======================================================================
+resource "aws_security_group" "my_sg" {
+  name = "my-security-group"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Allowing from anywhere (be cautious with this)
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1" # Allows all outbound traffic
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+output "security_group_id" {
+  value = aws_security_group.my_sg.id
+}
+======================================================================
+variables.tf
+======================================================================
+variable "imageid" {
+  type    = string
+  default = "ami-0ebfd941bbafe70c6"
+}
+
+variable "az" {
+  type    = string
+  default = "us-east-1c"
+}
+
+variable "itype" {
+  type    = string
+  default = "t2.micro"
+}
+
+variable "key" {
+  type    = string
+  default = "flm"
+}
+
+variable "icount" {
+}
+======================================================================
+Commands
+======================================================================
+terraform init
+terraform plan -var="icount=2"
+terraform apply --auto-approve -var="icount=2"
+terraform destroy --auto-approve -var="icount=2"
+======================================================================
